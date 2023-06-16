@@ -7,61 +7,47 @@ import { flushSync } from "react-dom";
 const ContainerMain = () => {
   const [isThumbnail, setIsThumbnail] = useState(true);
   const [selectedPic, setSelectedPic] = useState(null);
+  const skins = [skin1, skin2, skin3, skin4];
 
-  const handleThumbnailClick = (pic) => {
-    try {
-      setSelectedPic(pic);
-      handleMove();
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const handleMove = () => {
-    document.startViewTransition(() => {
+    function updateTheDOMSomehow() {
       flushSync(() => {
         setIsThumbnail((prev) => !prev);
       });
+    }
+    document.startViewTransition(() => {
+      updateTheDOMSomehow();
     });
   };
+  const testHandle = (e) => {
+    e.currentTarget.style.viewTransitionName = "skinItem";
+    setSelectedPic(e.target.src);
+    handleMove(e);
+  };
   return (
-    <>
+    <div className="container">
       {isThumbnail && (
-        <div className="main">
-          <img
-            src={skin1}
-            className="gun-img"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleThumbnailClick(skin1)}
-          ></img>
-          <img
-            src={skin2}
-            style={{ cursor: "pointer" }}
-            onClick={() => handleThumbnailClick(skin2)}
-          ></img>
-          <img
-            src={skin3}
-            style={{ cursor: "pointer" }}
-            onClick={() => handleThumbnailClick(skin3)}
-          ></img>
-          <img
-            src={skin4}
-            style={{ cursor: "pointer" }}
-            onClick={() => handleThumbnailClick(skin4)}
-          ></img>
+        <div className="skins-list">
+          {skins.map((skin, index) => (
+            <img src={skin} key={index} onClick={(e) => testHandle(e)} />
+          ))}
         </div>
       )}
       {!isThumbnail && selectedPic && (
-        <div className="about">
+        <div className="skin">
+          <img src={selectedPic} onClick={handleMove}></img>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ContainerMain;
+/* <div className="about">
           <img src={selectedPic} onClick={handleMove} className="gun-img"></img>
           <footer>
             <img src={skin2}></img>
             <img src={skin3}></img>
             <img src={skin4}></img>
           </footer>
-        </div>
-      )}
-    </>
-  );
-};
-
-export default ContainerMain;
+        </div> */
