@@ -1,20 +1,28 @@
-import skin1 from "./assets/skin1.webp";
-import skin2 from "./assets/skin2.webp";
-import skin3 from "./assets/skin3.webp";
-import skin4 from "./assets/skin4.webp";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import ContainerMain from "./components/ContainerMain";
+import PageNotFound from "./components/PageNotFound";
+import CardView from "./components/CardView";
+
 
 function App() {
+  let isViewTransition =
+    "Opss, Your browser doesn't support View Transitions API";
+  if (document.startViewTransition) {
+    isViewTransition = "Yess, Your browser support View Transitions API";
+  }
   return (
-    <div className="main">
-      <div>
-        <img src={skin1}></img>
-        <img src={skin2}></img>
-        <img src={skin3}></img>
-        <img src={skin4}></img>
-      </div>
-      <div></div>
-    </div>
+    <>
+      <Routes>
+        <Route index element={<ContainerMain/>} />
+        <Route path="About" element={<CardView/>}/>
+        <Route path="*" element={<PageNotFound />}/>
+      </Routes>
+      <footer>
+        <a href="/">Complete this tutorial</a>
+        <p>{isViewTransition}</p>
+      </footer>
+    </>
   );
 }
 
